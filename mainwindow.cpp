@@ -29,9 +29,11 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::switchPages() {
+    web->page()->runJavaScript(QString("ola_infoscreen_stop();"));
     if (web->page() == firstP) {
         web->setPage(secondP);
     } else {
         web->setPage(firstP);
     }
+    web->page()->runJavaScript(QString("ola_infoscreen_start();"));
 }
