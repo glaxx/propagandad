@@ -51,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete firstP;
+    delete secondP;
     delete ui;
     delete q;
 }
