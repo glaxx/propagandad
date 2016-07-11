@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("propagandad");
     web = new QWebEngineView(this);
 
     firstP = new QWebEnginePage(this);
