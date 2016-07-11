@@ -30,10 +30,11 @@ MainWindow::MainWindow(QWidget *parent) :
     web = new QWebEngineView(this);
 
     firstP = new QWebEnginePage(this);
-    firstP->load(QUrl("http://heise.de"));
+    firstP->load(QUrl("http://kuchengabel.de"));
 
     secondP = new QWebEnginePage(this);
-    secondP->load(QUrl("http://google.de"));
+    secondP->load(QUrl("http://endless.horse"));
+
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(switchPages()));
