@@ -20,6 +20,10 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <qhttpserver.hpp>
+#include <qhttpserverrequest.hpp>
+#include <qhttpserverresponse.hpp>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -47,10 +51,40 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->horizontalLayout->addWidget(web);
     this->showFullScreen();
 
+
+    connect(this, SIGNAL(urlReceived(QUrl*)), this, SLOT(onUrlReceived(QUrl*)));
+
+    srv = new qhttp::server::QHttpServer(this);
+    srv->listen(
+        QHostAddress::Any, 8080,
+        [=](qhttp::server::QHttpRequest *req, qhttp::server::QHttpResponse *res) {
+        req->collectData(1024);
+
+        req->onEnd([this, req, res]() {
+            if(req->url().matches(QUrl("/register"), QUrl::RemoveAuthority)) {
+                if((req->method() != qhttp::EHTTP_POST) || (req->collectedData().size() == 0)) {
+                    res->setStatusCode(qhttp::ESTATUS_BAD_REQUEST);
+                    res->end();
+                } else {
+                    QUrl * u = new QUrl(QString(req->collectedData()));
+                    if (u->isValid() && !(u->isEmpty() ) ) {
+                        emit urlReceived(u);
+                        res->setStatusCode(qhttp::ESTATUS_OK);
+                        res->end();
+                    }
+                }
+            } else {
+                res->setStatusCode(qhttp::ESTATUS_NOT_FOUND);
+                res->end();
+            }
+        });
+
+    });
 }
 
 MainWindow::~MainWindow()
 {
+    delete srv;
     delete firstP;
     delete secondP;
     delete ui;

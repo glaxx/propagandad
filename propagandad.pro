@@ -20,13 +20,12 @@
 
 
 QT       += core gui webenginewidgets
-CONFIG   += c++11
+CONFIG   += c++14 qt thread
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = propagandad
 TEMPLATE = app
-
 
 SOURCES += main.cpp\
         mainwindow.cpp
@@ -34,3 +33,6 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
+
+INCLUDEPATH += $$PWD/qhttp/src
+LIBS += -L$$PWD/qhttp/xbin -lqhttp

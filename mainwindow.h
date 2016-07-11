@@ -27,6 +27,7 @@
 #include <QTimer>
 #include <QQueue>
 #include <QUrl>
+#include <qhttpserver.hpp>
 
 namespace Ui {
 class MainWindow;
@@ -44,6 +45,8 @@ public slots:
     void switchPages();
     void onUrlReceived(QUrl * u);
 
+signals:
+    void urlReceived(QUrl * u);
 
 private:
     Ui::MainWindow *ui;
@@ -51,6 +54,7 @@ private:
     QWebEnginePage *firstP;
     QWebEnginePage *secondP;
     QTimer *timer;
+    qhttp::server::QHttpServer *srv;
     QQueue<QUrl> *q;
 };
 
