@@ -41,7 +41,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     web->setPage(firstP);
     web->show();
+
     ui->horizontalLayout->addWidget(web);
+    this->showFullScreen();
+
 }
 
 MainWindow::~MainWindow()
