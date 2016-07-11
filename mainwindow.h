@@ -25,6 +25,8 @@
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QTimer>
+#include <QQueue>
+#include <QUrl>
 
 namespace Ui {
 class MainWindow;
@@ -40,6 +42,8 @@ public:
 
 public slots:
     void switchPages();
+    void onUrlReceived(QUrl * u);
+
 
 private:
     Ui::MainWindow *ui;
@@ -47,6 +51,7 @@ private:
     QWebEnginePage *firstP;
     QWebEnginePage *secondP;
     QTimer *timer;
+    QQueue<QUrl> *q;
 };
 
 #endif // MAINWINDOW_H

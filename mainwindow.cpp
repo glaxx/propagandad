@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     secondP = new QWebEnginePage(this);
     secondP->load(QUrl("http://endless.horse"));
 
+    q = new QQueue<QUrl>;
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(switchPages()));
@@ -51,14 +52,26 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete q;
+}
+
+void MainWindow::onUrlReceived(QUrl * u) {
+    qDebug() << Q_FUNC_INFO;
+    q->enqueue(*u);
 }
 
 void MainWindow::switchPages() {
     web->page()->runJavaScript(QString("ola_infoscreen_stop();"));
     if (web->page() == firstP) {
         web->setPage(secondP);
+        if( !(q->isEmpty() ) ) {
+            firstP->setUrl(q->dequeue());
+        }
     } else {
         web->setPage(firstP);
+        if( !(q->isEmpty() ) ) {
+            secondP->setUrl(q->dequeue());
+        }
     }
     web->page()->runJavaScript(QString("ola_infoscreen_start();"));
 }
